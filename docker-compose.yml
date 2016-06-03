@@ -1,0 +1,230 @@
+version: '2'
+
+services:
+  ##############################################################################
+  # ELASTICHQ                                                                  #
+  ##############################################################################
+  elasticsearch-elastichq:
+    container_name: elasticsearch-elastichq
+    hostname: elasticsearch-elastichq
+    build: ./elasticHQ/
+    networks:
+      es-estest-network:
+        aliases:
+          - elastichq
+    ports:
+      - "8080:80"
+    links:
+      - "elasticsearch-master1:master1"
+      - "elasticsearch-master2:master2"
+
+  ##############################################################################
+  # ELASTICSEARCH MASTER NODE 1                                                #
+  ##############################################################################
+  elasticsearch-master1:
+    container_name: elasticsearch-master1
+    hostname: elasticsearch-master1
+    image: elasticsearch:2.3.3
+    volumes:
+      - "./elasticsearch/volumes/master1/config:/usr/share/elasticsearch/config"
+      - "./elasticsearch/volumes/master1/esdata:/usr/share/elasticsearch/data"
+      - "./elasticsearch/volumes/master1/logs:/usr/share/elasticsearch/logs"
+      - "./elasticsearch/volumes/master1/plugins:/usr/share/elasticsearch/plugins"
+    networks:
+      es-estest-network:
+        aliases:
+          - master1
+    expose:
+      - 9200
+      - 9300
+
+  ##############################################################################
+  # ELASTICSEARCH MASTER NODE 2                                                #
+  ##############################################################################
+  elasticsearch-master2:
+    container_name: elasticsearch-master2
+    hostname: elasticsearch-master2
+    image: elasticsearch:2.3.3
+    volumes:
+      - "./elasticsearch/volumes/master2/config:/usr/share/elasticsearch/config"
+      - "./elasticsearch/volumes/master2/esdata:/usr/share/elasticsearch/data"
+      - "./elasticsearch/volumes/master2/logs:/usr/share/elasticsearch/logs"
+      - "./elasticsearch/volumes/master2/plugins:/usr/share/elasticsearch/plugins"
+    networks:
+      es-estest-network:
+        aliases:
+          - master2
+    expose:
+      - 9200
+      - 9300
+
+  ##############################################################################
+  # ELASTICSEARCH LOADBALANCER NODE 1                                          #
+  ##############################################################################
+  elasticsearch-loadbalancer1:
+    container_name: elasticsearch-loadbalancer1
+    hostname: elasticsearch-loadbalancer1
+    image: elasticsearch:2.3.3
+    volumes:
+      - "./elasticsearch/volumes/loadbalancer1/config:/usr/share/elasticsearch/config"
+      - "./elasticsearch/volumes/loadbalancer1/esdata:/usr/share/elasticsearch/data"
+      - "./elasticsearch/volumes/loadbalancer1/logs:/usr/share/elasticsearch/logs"
+      - "./elasticsearch/volumes/loadbalancer1/plugins:/usr/share/elasticsearch/plugins"
+    networks:
+      es-estest-network:
+        aliases:
+          - loadbalancer1
+    expose:
+      - 9200
+      - 9300
+    links:
+      - "elasticsearch-master1:master1"
+      - "elasticsearch-master2:master2"
+      - "elasticsearch-data1:data1"
+      - "elasticsearch-data2:data2"
+      - "elasticsearch-data3:data3"
+      - "elasticsearch-data4:data4"
+      - "elasticsearch-data5:data5"
+
+
+  ##############################################################################
+  # ELASTICSEARCH DATA NODE 1                                                  #
+  ##############################################################################
+  elasticsearch-data1:
+    container_name: elasticsearch-data1
+    hostname: elasticsearch-data1
+    image: elasticsearch:2.3.3
+    volumes:
+      - "./elasticsearch/volumes/data1/config:/usr/share/elasticsearch/config"
+      - "./elasticsearch/volumes/data1/esdata:/usr/share/elasticsearch/data"
+      - "./elasticsearch/volumes/data1/logs:/usr/share/elasticsearch/logs"
+      - "./elasticsearch/volumes/data1/plugins:/usr/share/elasticsearch/plugins"
+    networks:
+      es-estest-network:
+        aliases:
+          - data1
+    expose:
+      - 9200
+      - 9300
+    links:
+      - "elasticsearch-master1:master1"
+      - "elasticsearch-master2:master2"
+
+
+  ##############################################################################
+  # ELASTICSEARCH DATA NODE 2                                                  #
+  ##############################################################################
+  elasticsearch-data2:
+    container_name: elasticsearch-data2
+    hostname: elasticsearch-data2
+    image: elasticsearch:2.3.3
+    volumes:
+      - "./elasticsearch/volumes/data2/config:/usr/share/elasticsearch/config"
+      - "./elasticsearch/volumes/data2/esdata:/usr/share/elasticsearch/data"
+      - "./elasticsearch/volumes/data2/logs:/usr/share/elasticsearch/logs"
+      - "./elasticsearch/volumes/data2/plugins:/usr/share/elasticsearch/plugins"
+    networks:
+      es-estest-network:
+        aliases:
+          - data2
+    expose:
+      - 9200
+      - 9300
+    links:
+      - "elasticsearch-master1:master1"
+      - "elasticsearch-master2:master2"
+
+  ##############################################################################
+  # ELASTICSEARCH DATA NODE 3                                                  #
+  ##############################################################################
+  elasticsearch-data3:
+    container_name: elasticsearch-data3
+    hostname: elasticsearch-data3
+    image: elasticsearch:2.3.3
+    volumes:
+      - "./elasticsearch/volumes/data3/config:/usr/share/elasticsearch/config"
+      - "./elasticsearch/volumes/data3/esdata:/usr/share/elasticsearch/data"
+      - "./elasticsearch/volumes/data3/logs:/usr/share/elasticsearch/logs"
+      - "./elasticsearch/volumes/data3/plugins:/usr/share/elasticsearch/plugins"
+    networks:
+      es-estest-network:
+        aliases:
+          - data3
+    expose:
+      - 9200
+      - 9300
+    links:
+      - "elasticsearch-master1:master1"
+      - "elasticsearch-master2:master2"
+
+  ##############################################################################
+  # ELASTICSEARCH DATA NODE 4                                                  #
+  ##############################################################################
+  elasticsearch-data4:
+    container_name: elasticsearch-data4
+    hostname: elasticsearch-data4
+    image: elasticsearch:2.3.3
+    volumes:
+      - "./elasticsearch/volumes/data4/config:/usr/share/elasticsearch/config"
+      - "./elasticsearch/volumes/data4/esdata:/usr/share/elasticsearch/data"
+      - "./elasticsearch/volumes/data4/logs:/usr/share/elasticsearch/logs"
+      - "./elasticsearch/volumes/data4/plugins:/usr/share/elasticsearch/plugins"
+    networks:
+      es-estest-network:
+        aliases:
+          - data4
+    expose:
+      - 9200
+      - 9300
+    links:
+      - "elasticsearch-master1:master1"
+      - "elasticsearch-master2:master2"
+
+  ##############################################################################
+  # ELASTICSEARCH DATA NODE 5                                                  #
+  ##############################################################################
+  elasticsearch-data5:
+    container_name: elasticsearch-data5
+    hostname: elasticsearch-data5
+    image: elasticsearch:2.3.3
+    volumes:
+      - "./elasticsearch/volumes/data5/config:/usr/share/elasticsearch/config"
+      - "./elasticsearch/volumes/data5/esdata:/usr/share/elasticsearch/data"
+      - "./elasticsearch/volumes/data5/logs:/usr/share/elasticsearch/logs"
+      - "./elasticsearch/volumes/data5/plugins:/usr/share/elasticsearch/plugins"
+    networks:
+      es-estest-network:
+        aliases:
+          - data5
+    expose:
+      - 9200
+      - 9300
+    links:
+      - "elasticsearch-master1:master1"
+      - "elasticsearch-master2:master2"
+
+  ##############################################################################
+  # ELASTICSEARCH DATA NODE 6                                                  #
+  ##############################################################################
+  elasticsearch-data6:
+    container_name: elasticsearch-data6
+    hostname: elasticsearch-data6
+    image: elasticsearch:2.3.3
+    volumes:
+      - "./elasticsearch/volumes/data6/config:/usr/share/elasticsearch/config"
+      - "./elasticsearch/volumes/data6/esdata:/usr/share/elasticsearch/data"
+      - "./elasticsearch/volumes/data6/logs:/usr/share/elasticsearch/logs"
+      - "./elasticsearch/volumes/data6/plugins:/usr/share/elasticsearch/plugins"
+    networks:
+      es-estest-network:
+        aliases:
+          - data6
+    expose:
+      - 9200
+      - 9300
+    links:
+      - "elasticsearch-master1:master1"
+      - "elasticsearch-master2:master2"
+
+networks:
+    es-estest-network:
